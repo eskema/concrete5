@@ -60,7 +60,7 @@ class BlockType
         }
         $class = static::getBlockTypeMappedClass($btHandle, $pkgHandle);
         $app = Facade::getFacadeApplication();
-        $bta = $app->build($class);
+        try { $bta = $app->build($class); } catch (ReflectionException $e) { throw new \InvalidArgumentException(sprintf('Invalid block handle, expected class %s', $class));}
         $path = dirname($env->getPath(DIRNAME_BLOCKS . '/' . $btHandle . '/' . FILENAME_BLOCK_DB, $pkgHandle));
 
         //Attempt to run the subclass methods (install schema from db.xml, etc.)
